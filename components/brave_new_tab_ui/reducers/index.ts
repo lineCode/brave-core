@@ -14,6 +14,7 @@ import rewardsReducer from './rewards_reducer'
 import geminiReducer from './gemini_reducer'
 import bitcoinDotComReducer from './bitcoin_dot_com_reducer'
 import cryptoDotComReducer from './cryptoDotCom_reducer'
+import todayReducer from './today'
 
 export const newTabReducers = (state: NewTab.State | undefined, action: any) => {
   if (state === undefined) {
@@ -37,7 +38,8 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
 
 export const mainNewTabReducer = combineReducers<NewTab.ApplicationState>({
   newTabData: newTabReducers,
-  gridSitesData: gridSitesReducer
+  gridSitesData: gridSitesReducer,
+  today: todayReducer
 })
 
 export const newTabReducer = newTabStateReducer
