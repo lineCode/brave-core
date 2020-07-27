@@ -23,6 +23,7 @@
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlists/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -97,6 +98,10 @@
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYLISTS)
+#include "brave/components/playlists/common/pref_names.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -315,6 +320,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if !defined(OS_ANDROID)
   brave_ads::RegisterP2APrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYLISTS)
+  registry->RegisterDictionaryPref(brave_playlists::kBravePlaylistItems);
 #endif
 
   RegisterProfilePrefsForMigration(registry);
