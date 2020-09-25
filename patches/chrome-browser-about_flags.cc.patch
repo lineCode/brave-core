@@ -1,5 +1,9 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
+<<<<<<< HEAD
 index 865a15174b12321db34e04473c26cf3591ba1c2d..3a50e4b6701e0840f3b5b08e61939b476544a105 100644
+=======
+index b1a12f28f5c096add95f2973186378e9bcb0fdd4..bb7b3348d56223a4dff50df2cff8c7082499085c 100644
+>>>>>>> Rebase patch files after rebasing CR
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -294,14 +294,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
@@ -18,22 +22,18 @@ index 865a15174b12321db34e04473c26cf3591ba1c2d..3a50e4b6701e0840f3b5b08e61939b47
      {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
 -     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
 +     "https://no-thanks.invalid"}};
-
+ 
  const FeatureEntry::Choice kPassiveListenersChoices[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
+<<<<<<< HEAD
 @@ -6716,6 +6716,7 @@ const FeatureEntry kFeatureEntries[] = {
+=======
+@@ -6369,6 +6369,7 @@ const FeatureEntry kFeatureEntries[] = {
+>>>>>>> Rebase patch files after rebasing CR
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
 +    BRAVE_FEATURE_ENTRIES
  };
-
+ 
  class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {
-@@ -6482,6 +6483,7 @@ bool SkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
-
-   if (flags::IsFlagExpired(storage, entry.internal_name))
-     return true;
-+  BRAVE_SKIP_CONDITIONAL_FEATURE_ENTRY
-
-   return false;
- }
