@@ -10,6 +10,7 @@
 
 #include "base/guid.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/values.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -413,10 +414,19 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   const auto settingsValueBool = settingsValue.GetBool();
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
+    bool is_sponsored_image_enabled =
+        settingsValueBool &&
+        prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage);
+    UMA_HISTOGRAM_BOOLEAN("Brave.NTP.SponsoredImagesEnabled",
+                          is_sponsored_image_enabled);
   } else if (settingsKeyInput == "brandedWallpaperOptIn") {
     // TODO(simonhong): I think above |brandedWallpaperOptIn| should be changed
     // to |sponsoredImagesWallpaperOptIn|.
     settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
+    bool is_sponsored_image_enabled =
+        prefs->GetBoolean(kNewTabPageShowBackgroundImage) && settingsValueBool;
+    UMA_HISTOGRAM_BOOLEAN("Brave.NTP.SponsoredImagesEnabled",
+                          is_sponsored_image_enabled);
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showStats") {
