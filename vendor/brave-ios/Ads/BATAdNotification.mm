@@ -15,7 +15,6 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *body;
 @property (nonatomic, copy) NSString *targetURL;
-@property (nonatomic, copy) NSString *geoTarget;
 @end
 
 @implementation BATAdNotification
@@ -31,7 +30,6 @@
     self.title = [NSString stringWithUTF8String:info.title.c_str()];
     self.body = [NSString stringWithUTF8String:info.body.c_str()];
     self.targetURL = [NSString stringWithUTF8String:info.target_url.c_str()];
-    self.geoTarget = [NSString stringWithUTF8String:info.geo_target.c_str()];
   }
   return self;
 }

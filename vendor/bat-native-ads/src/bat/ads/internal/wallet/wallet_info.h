@@ -24,7 +24,7 @@ struct WalletInfo {
   bool operator!=(
       const WalletInfo& rhs) const;
 
-  std::string payment_id;
+  std::string id;
   std::string secret_key;
 };
 

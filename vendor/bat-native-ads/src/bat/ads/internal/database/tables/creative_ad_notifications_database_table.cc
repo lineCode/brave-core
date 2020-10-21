@@ -90,7 +90,7 @@ void CreativeAdNotifications::Delete(
 }
 
 void CreativeAdNotifications::GetForCategories(
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeAdNotificationsCallback callback) {
   if (categories.empty()) {
     callback(Result::SUCCESS, categories, {});
@@ -346,7 +346,7 @@ std::string CreativeAdNotifications::BuildInsertOrUpdateQuery(
 
 void CreativeAdNotifications::OnGetForCategories(
     DBCommandResponsePtr response,
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeAdNotificationsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad notifications");
@@ -388,7 +388,7 @@ void CreativeAdNotifications::OnGetAll(
     categories.insert(creative_ad_notification.category);
   }
 
-  classification::CategoryList normalized_categories;
+  CategoryList normalized_categories;
   for (const auto& category : categories) {
     normalized_categories.push_back(category);
   }

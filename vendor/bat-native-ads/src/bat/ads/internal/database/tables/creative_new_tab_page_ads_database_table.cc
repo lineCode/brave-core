@@ -17,7 +17,6 @@
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 namespace database {
@@ -172,7 +171,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
 }
 
 void CreativeNewTabPageAds::GetForCategories(
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeNewTabPageAdsCallback callback) {
   if (categories.empty()) {
     callback(Result::SUCCESS, categories, {});
@@ -442,7 +441,7 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
 
 void CreativeNewTabPageAds::OnGetForCategories(
     DBCommandResponsePtr response,
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeNewTabPageAdsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
@@ -484,7 +483,7 @@ void CreativeNewTabPageAds::OnGetAll(
     categories.insert(creative_new_tab_page_ad.category);
   }
 
-  classification::CategoryList normalized_categories;
+  CategoryList normalized_categories;
   for (const auto& category : categories) {
     normalized_categories.push_back(category);
   }

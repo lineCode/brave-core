@@ -9,8 +9,8 @@
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports/reports.h"
-#include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 
 namespace ads {
 

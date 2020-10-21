@@ -182,7 +182,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -274,7 +274,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -326,7 +326,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -397,7 +397,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -537,7 +537,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -587,7 +587,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -680,7 +680,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -752,7 +752,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -823,7 +823,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_new_tab_page_ads](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
@@ -874,7 +874,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   database_table_->GetForCategories(categories, [](
       const Result result,
-      const classification::CategoryList& categories,
+      const CategoryList& categories,
       const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_EQ(1UL, creative_new_tab_page_ads.size());

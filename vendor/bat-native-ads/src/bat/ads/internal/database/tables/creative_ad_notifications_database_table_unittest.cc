@@ -182,7 +182,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -274,7 +274,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -326,7 +326,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -397,7 +397,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -445,7 +445,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -495,7 +495,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -588,7 +588,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -660,7 +660,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -731,7 +731,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForCategories(categories,
       [&expected_creative_ad_notifications](
           const Result result,
-          const classification::CategoryList& categories,
+          const CategoryList& categories,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -782,7 +782,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 
   database_table_->GetForCategories(categories, [](
       const Result result,
-      const classification::CategoryList& categories,
+      const CategoryList& categories,
       const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_EQ(2UL, creative_ad_notifications.size());

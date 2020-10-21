@@ -11,9 +11,10 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "wrapper.hpp"
+#include "bat/ads/internal/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/server/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_util.h"
 
 namespace ads {

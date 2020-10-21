@@ -96,7 +96,15 @@ void SetBuildChannel(
 
 void MockPlatformHelper(
     const std::unique_ptr<PlatformHelperMock>& mock,
-    PlatformType platform_type);
+    const PlatformType platform_type);
+
+void MockIsNetworkConnectionAvailable(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool is_available);
+
+void MockShouldShowNotifications(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool should_show);
 
 void MockSave(
     const std::unique_ptr<AdsClientMock>& mock);

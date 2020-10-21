@@ -7,15 +7,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
-  BATAdsConfirmationTypeNone,       // = ads::ConfirmationType::kNone
-  BATAdsConfirmationTypeClick,      // = ads::ConfirmationType::kClicked
-  BATAdsConfirmationTypeDismiss,    // = ads::ConfirmationType::kDismissed
-  BATAdsConfirmationTypeView,       // = ads::ConfirmationType::kViewed
-  BATAdsConfirmationTypeLanded,     // = ads::ConfirmationType::kLanded
-  BATAdsConfirmationTypeFlagged,    // = ads::ConfirmationType::kFlagged
-  BATAdsConfirmationTypeUpvoted,    // = ads::ConfirmationType::kUpvoted
-  BATAdsConfirmationTypeDownvoted,  // = ads::ConfirmationType::kDownvoted
-  BATAdsConfirmationTypeConversion  // = ads::ConfirmationType::kConversion
+  BATAdsCUndefinedonfirmationType,  // = ads::ConfirmationType::kUndefined
+  BATAdsClickedConfirmationType,    // = ads::ConfirmationType::kClicked
+  BATAdsDismissedConfirmationType,  // = ads::ConfirmationType::kDismissed
+  BATAdsViewedConfirmationType,     // = ads::ConfirmationType::kViewed
+  BATAdsLandedConfirmationType,     // = ads::ConfirmationType::kLanded
+  BATAdsFlaggedConfirmationType,    // = ads::ConfirmationType::kFlagged
+  BATAdsUpvotedConfirmationType,    // = ads::ConfirmationType::kUpvoted
+  BATAdsDownvotedConfirmationType,  // = ads::ConfirmationType::kDownvoted
+  BATAdsConversionConfirmationType  // = ads::ConfirmationType::kConversion
 } NS_SWIFT_NAME(ConfirmationType);
 
 NS_SWIFT_NAME(AdsNotification)
@@ -28,7 +28,6 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *body;
 @property (nonatomic, readonly, copy) NSString *targetURL;
-@property (nonatomic, readonly, copy) NSString *geoTarget;
 @end
 
 @interface BATAdNotification (MyFirstAd)

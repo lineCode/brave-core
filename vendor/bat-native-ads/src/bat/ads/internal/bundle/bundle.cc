@@ -14,16 +14,16 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/bundle_state.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/database/tables/ad_conversions_database_table.h"
+#include "bat/ads/internal/catalog/catalog_creative_set_info.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
+#include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -63,7 +63,7 @@ bool Bundle::UpdateFromCatalog(
 
   SaveCreativeAdNotifications(bundle_state->creative_ad_notifications);
   SaveCreativeNewTabPageAds(bundle_state->creative_new_tab_page_ads);
-  SaveAdConversions(bundle_state->ad_conversions);
+  SaveConversions(bundle_state->conversions);
 
   return true;
 }
@@ -133,21 +133,21 @@ void Bundle::SaveCreativeNewTabPageAds(
       std::bind(&Bundle::OnCreativeNewTabPageAdsSaved, this, _1));
 }
 
-void Bundle::SaveAdConversions(
-    const AdConversionList& ad_conversions) {
-  database::table::AdConversions database_table(ads_);
+void Bundle::SaveConversions(
+    const ConversionList& conversions) {
+  database::table::Conversions database_table(ads_);
 
-  database_table.PurgeExpiredAdConversions(
-      std::bind(&Bundle::OnPurgedExpiredAdConversions, this, _1));
+  database_table.PurgeExpiredConversions(
+      std::bind(&Bundle::OnPurgedExpiredConversions, this, _1));
 
-  database_table.Save(ad_conversions,
-      std::bind(&Bundle::OnAdConversionsSaved, this, _1));
+  database_table.Save(conversions,
+      std::bind(&Bundle::OnConversionsSaved, this, _1));
 }
 
 bool Bundle::IsOlderThanOneDay() const {
   const base::Time now = base::Time::Now();
 
-  if (now > catalog_last_updated_ + base::TimeDelta::FromDays(1)) {
+  if (now >= catalog_last_updated_ + base::TimeDelta::FromDays(1)) {
     return true;
   }
 
@@ -172,7 +172,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
   CreativeAdNotificationList creative_ad_notifications;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
-  AdConversionList ad_conversions;
+  ConversionList conversions;
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
@@ -248,8 +248,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion =
-            creative_set.ad_conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
         info.dayparts = creative_dayparts;
@@ -331,8 +330,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion =
-            creative_set.ad_conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
         info.dayparts = creative_dayparts;
@@ -376,10 +374,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         continue;
       }
 
-      // Ad conversions
-      ad_conversions.insert(ad_conversions.end(),
-          creative_set.ad_conversions.begin(),
-              creative_set.ad_conversions.end());
+      // Conversions
+      conversions.insert(conversions.end(), creative_set.conversions.begin(),
+          creative_set.conversions.end());
     }
   }
 
@@ -390,7 +387,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_last_updated = base::Time::Now();
   state->creative_ad_notifications = creative_ad_notifications;
   state->creative_new_tab_page_ads = creative_new_tab_page_ads;
-  state->ad_conversions = ad_conversions;
+  state->conversions = conversions;
 
   return state;
 }
@@ -504,24 +501,24 @@ void Bundle::OnCreativeNewTabPageAdsSaved(
   BLOG(3, "Successfully saved creative new tab page ads state");
 }
 
-void Bundle::OnPurgedExpiredAdConversions(
+void Bundle::OnPurgedExpiredConversions(
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(0, "Failed to purge expired ad conversions");
+    BLOG(0, "Failed to purge expired conversions");
     return;
   }
 
-  BLOG(3, "Successfully purged expired ad conversions");
+  BLOG(3, "Successfully purged expired conversions");
 }
 
-void Bundle::OnAdConversionsSaved(
+void Bundle::OnConversionsSaved(
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(0, "Failed to save ad conversions state");
+    BLOG(0, "Failed to save conversions state");
     return;
   }
 
-  BLOG(3, "Successfully saved ad conversions state");
+  BLOG(3, "Successfully saved conversions state");
 }
 
 }  // namespace ads

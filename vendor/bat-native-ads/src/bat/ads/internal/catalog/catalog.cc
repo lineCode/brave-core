@@ -5,10 +5,11 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/catalog/catalog_state.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

@@ -15,12 +15,13 @@ WalletInfo::WalletInfo(
 WalletInfo::~WalletInfo() = default;
 
 bool WalletInfo::IsValid() const {
-  return !payment_id.empty() && !secret_key.empty();
+  return !id.empty() && !secret_key.empty();
 }
 
 bool WalletInfo::operator==(
     const WalletInfo& rhs) const {
-  return (payment_id == rhs.payment_id && secret_key == rhs.secret_key);
+  return id == rhs.id &&
+      secret_key == rhs.secret_key;
 }
 
 bool WalletInfo::operator!=(

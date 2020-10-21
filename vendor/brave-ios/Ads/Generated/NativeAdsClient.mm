@@ -27,8 +27,8 @@ bool NativeAdsClient::CanShowBackgroundNotifications() const {
     return [bridge_ canShowBackgroundNotifications];
 }
 
-void NativeAdsClient::ShowNotification(std::unique_ptr<ads::AdNotificationInfo> info) {
-  [bridge_ showNotification:std::move(info)];
+void NativeAdsClient::ShowNotification(const ads::AdNotificationInfo & ad_notification) {
+  [bridge_ showNotification:ad_notification];
 }
 
 bool NativeAdsClient::ShouldShowNotifications() {
