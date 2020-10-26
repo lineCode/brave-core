@@ -2,27 +2,45 @@ declare namespace BraveToday {
 
   // Messages
   namespace Messages {
+    // getFeed
     export type GetFeedResponse = {
       feed: BraveToday.Feed | undefined
     }
+    // getPublishers
     export type GetPublishersResponse = {
       publishers: BraveToday.Publishers | undefined
     }
+    // getImageData
     export type GetImageDataPayload = {
       url: string
     }
     export type GetImageDataResponse = {
       dataUrl: string
     }
+    // set publisher prefs
+    export type SetPublisherPrefPayload = {
+      publisherId: string
+      // Boolean for explicit change, null for remove pref.
+      enabled: boolean | null
+    }
+    export type SetPublisherPrefResponse = GetPublishersResponse
+    // isFeedUpdateAvailable
+    export type IsFeedUpdateAvailablePayload = {
+      hash: string
+    }
+    export type IsFeedUpdateAvailableResponse = {
+      isUpdateAvailable: boolean
+    }
   }
 
   export type FeedItem = (Article | Deal)
 
   export interface Feed {
+    hash: string
+    pages: Page[]
     featuredSponsor?: Article
     featuredArticle?: Article
     featuredDeals?: Deal[]
-    pages: Page[]
   }
 
   export interface Page {
