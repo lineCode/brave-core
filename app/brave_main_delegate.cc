@@ -23,6 +23,7 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
+#include "chrome/browser/metrics/chrome_metrics_services_manager_client.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_features.h"
@@ -233,6 +234,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
+    metrics::internal::kMetricsReportingFeature.name,
     network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kPasswordCheck.name,
     safe_browsing::kEnhancedProtection.name,

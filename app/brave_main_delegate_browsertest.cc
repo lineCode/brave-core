@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/domain_reliability/service_factory.h"
+#include "chrome/browser/metrics/chrome_metrics_services_manager_client.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -72,6 +73,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kSmsReceiver,
       &features::kVideoPlaybackQuality,
       &features::kTabHoverCards,
+      &metrics::internal::kMetricsReportingFeature,
       &network_time::kNetworkTimeServiceQuerying,
       &password_manager::features::kPasswordCheck,
       &safe_browsing::kEnhancedProtection,
