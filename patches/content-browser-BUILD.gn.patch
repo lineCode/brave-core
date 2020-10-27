@@ -1,0 +1,15 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index 1b474da31816ff9c43d350c8e3fdd6749c488912..cafd532d8dbb664ebea9cb35a27a2c774e186eba 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -2069,6 +2069,10 @@ source_set("browser") {
+     "worker_host/worker_script_loader_factory.h",
+   ]
+ 
++  if (is_android) { deps += ["//brave/browser/android/mojom",]
++    sources += ["//brave/browser/android/cosmetic_filters_communication_impl.h",
++    "//brave/browser/android/cosmetic_filters_communication_impl.cc",]}
++
+   if (toolkit_views) {
+     deps += [ "//ui/events" ]
+   }

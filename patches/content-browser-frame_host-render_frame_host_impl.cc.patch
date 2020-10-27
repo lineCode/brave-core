@@ -1,0 +1,21 @@
+diff --git a/content/browser/frame_host/render_frame_host_impl.cc b/content/browser/frame_host/render_frame_host_impl.cc
+index 0f68a935b9ac2b6f3ad1084e304a98f17f696a58..cb8ac82cece3ff3313a454a3108f7581c8ee16eb 100644
+--- a/content/browser/frame_host/render_frame_host_impl.cc
++++ b/content/browser/frame_host/render_frame_host_impl.cc
+@@ -9404,6 +9404,16 @@ bool RenderFrameHostImpl::DocumentUsedWebOTP() {
+   return document_used_web_otp_;
+ }
+ 
++#if defined(OS_ANDROID)
++void RenderFrameHostImpl::GetCosmeticFiltersResponder(
++      mojo::PendingReceiver<
++          cf_comm::mojom::CosmeticFiltersCommunication> receiver) {
++  mojo::MakeSelfOwnedReceiver(
++      std::make_unique<CosmeticFiltersCommunicationImpl>(this),
++      std::move(receiver));
++}
++#endif
++
+ std::ostream& operator<<(std::ostream& o,
+                          const RenderFrameHostImpl::LifecycleState& s) {
+   return o << LifecycleStateToString(s);

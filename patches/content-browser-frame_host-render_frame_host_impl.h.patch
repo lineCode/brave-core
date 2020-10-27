@@ -1,0 +1,24 @@
+diff --git a/content/browser/frame_host/render_frame_host_impl.h b/content/browser/frame_host/render_frame_host_impl.h
+index 2fc016fb4f91f34f7ab8440590790c93745d2f29..0905de71f8ad675becb27a0e3ccc9dbd41a0c15e 100644
+--- a/content/browser/frame_host/render_frame_host_impl.h
++++ b/content/browser/frame_host/render_frame_host_impl.h
+@@ -147,6 +147,7 @@
+ #include "ui/gfx/geometry/rect.h"
+ 
+ #if defined(OS_ANDROID)
++#include "brave/browser/android/cosmetic_filters_communication_impl.h"
+ #include "services/device/public/mojom/nfc.mojom.h"
+ #else
+ #include "third_party/blink/public/mojom/hid/hid.mojom.h"
+@@ -1786,6 +1787,11 @@ class CONTENT_EXPORT RenderFrameHostImpl
+   // for the entire program duration.
+   std::unique_ptr<mojo::MessageFilter> CreateMessageFilterForAssociatedReceiver(
+       const char* interface_name);
++#if defined(OS_ANDROID)
++  void GetCosmeticFiltersResponder(
++      mojo::PendingReceiver<
++          cf_comm::mojom::CosmeticFiltersCommunication> receiver);
++#endif
+ 
+  protected:
+   friend class RenderFrameHostFactory;
