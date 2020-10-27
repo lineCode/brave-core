@@ -2,10 +2,10 @@ import("//build/config/features.gni")
 
 source_set("renderer") {
   visibility = [
-    "//chrome/renderer/*",
-    "//components/content_settings/renderer/*",
     "//brave/renderer/*",
     "//brave:child_dependencies",
+    "//chrome/renderer/*",
+    "//components/content_settings/renderer/*",
   ]
 
   sources = [
@@ -19,7 +19,9 @@ source_set("renderer") {
     "//base",
     "//content/public/renderer",
     "//gin",
+    "//mojo/public/cpp/bindings",
     "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
     "//v8",
   ]
 }

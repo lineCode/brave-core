@@ -12,18 +12,23 @@
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
+#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
 #include "v8/include/v8.h"
 
 namespace cosmetic_filters_worker {
 
 CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
-    content::RenderFrame* render_frame) {}
+    content::RenderFrame* render_frame):
+    render_frame_(render_frame) {}
 
 CosmeticFiltersJSHandler::~CosmeticFiltersJSHandler() = default;
 
-void CosmeticFiltersJSHandler::TestFunction(int number) {
-  LOG(ERROR) << "!!!TestFunction call from JavaScript number == " << number;
+void CosmeticFiltersJSHandler::HiddenClassIdSelectors(
+    const std::string& input) {
+  if (cs_communicator_) {
+    cs_communicator_->HiddenClassIdSelectors(input);
+  }
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -38,9 +43,11 @@ void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
   v8::Local<v8::Object> distiller_obj =
       GetOrCreateWorkerObject(isolate, context);
 
+  EnsureConnected();
+
   BindFunctionToObject(
-      isolate, distiller_obj, "testFunction",
-      base::BindRepeating(&CosmeticFiltersJSHandler::TestFunction,
+      isolate, distiller_obj, "hiddenClassIdSelectors",
+      base::BindRepeating(&CosmeticFiltersJSHandler::HiddenClassIdSelectors,
                           base::Unretained(this)));
 }
 
@@ -58,6 +65,13 @@ void CosmeticFiltersJSHandler::BindFunctionToObject(
                 ->GetFunction(context)
                 .ToLocalChecked())
       .Check();
+}
+
+void CosmeticFiltersJSHandler::EnsureConnected() {
+  if (!cs_communicator_) {
+    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+        cs_communicator_.BindNewPipeAndPassReceiver());
+  }  
 }
 
 v8::Local<v8::Object> GetOrCreateWorkerObject(

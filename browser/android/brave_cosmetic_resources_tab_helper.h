@@ -25,12 +25,22 @@ class BraveCosmeticResourcesTabHelper
       content::RenderFrameHost* render_frame_host,
       const content::GlobalRequestID& request_id,
       const blink::mojom::ResourceLoadInfo& resource_load_info) override;
+  bool OnMessageReceived(const IPC::Message& message,
+      content::RenderFrameHost* render_frame_host) override;
+  bool OnMessageReceived(const IPC::Message& message) override;
+  std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
+      const std::string& url);
+  void GetUrlCosmeticResourcesOnUI(content::RenderFrameHost* render_frame_host,
+      const std::string& url, bool main_frame,
+      std::unique_ptr<base::ListValue> resources);
+  void CSSRulesRoutine(const std::string& url,
+      base::DictionaryValue* resources_dict,
+      content::RenderFrameHost* render_frame_host);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:
-  void ProcessURL(content::WebContents* contents,
-      content::RenderFrameHost* render_frame_host, const GURL& url,
+  void ProcessURL(content::RenderFrameHost* render_frame_host, const GURL& url,
       const bool& main_frame);
   DISALLOW_COPY_AND_ASSIGN(BraveCosmeticResourcesTabHelper);
 };

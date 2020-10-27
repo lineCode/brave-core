@@ -8,6 +8,8 @@
 
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "brave/browser/android/mojom/cosmetic_filters_communication.mojom.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
 
 namespace cosmetic_filters_worker {
@@ -27,10 +29,13 @@ class CosmeticFiltersJSHandler {
   void BindFunctionToObject(v8::Isolate* isolate,
       v8::Local<v8::Object> javascript_object, const std::string& name,
       const base::RepeatingCallback<Sig>& callback);
+  void EnsureConnected();
 
-  void TestFunction(int number);
+  // A function to be called from JS
+  void HiddenClassIdSelectors(const std::string& input);
 
-  //content::RenderFrame* render_frame_;
+  content::RenderFrame* render_frame_;
+  mojo::Remote<cf_comm::mojom::CosmeticFiltersCommunication> cs_communicator_;
 };
 
 // static
