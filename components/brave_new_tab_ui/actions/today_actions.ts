@@ -1,6 +1,8 @@
 import { createAction } from 'redux-act'
 
-export const init = createAction<void>('init')
+export const todayInit = createAction<void>('todayInit')
+
+export const ensureSettingsData = createAction('ensureSettingsData')
 
 type DataReceivedPayload = {
   feed?: BraveToday.Feed
