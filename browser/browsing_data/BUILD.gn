@@ -12,6 +12,7 @@ source_set("browsing_data") {
 
   deps = [
     "//base",
+    "//brave/common/extensions/api",
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/content_settings/core/browser",

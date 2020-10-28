@@ -6,6 +6,22 @@ export default function getTodayState (): BraveTodayState {
     "isFetching": boolean('Today is fetching?', false),
     "isUpdateAvailable": boolean('Is Today update available?', false),
     "currentPageIndex": 10,
+    "publishers": {
+      "5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5": {
+        publisher_id: "5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+        publisher_name: "Test Publisher 1",
+        category: "",
+        enabled: false,
+        user_enabled: true
+      },
+      "4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5": {
+        publisher_id: "4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+        publisher_name: "Test Publisher 2",
+        category: "",
+        enabled: false,
+        user_enabled: null
+      },
+    },
     "feed": {
       "hash": "123abc",
       "featuredArticle": {

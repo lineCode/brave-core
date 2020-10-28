@@ -13,7 +13,8 @@ export namespace MessageTypes {
     indicatingOpen = 'indicatingOpen',
     getImageData = 'getImageData',
     setPublisherPref = 'setPublisherPref',
-    isFeedUpdateAvailable = 'isFeedUpdateAvailable'
+    isFeedUpdateAvailable = 'isFeedUpdateAvailable',
+    resetPrefsToDefault = 'resetPrefsToDefault',
   }
 }
 export type Payload = any
@@ -52,7 +53,7 @@ let isListening = false
 let messageHandlers: Map<MessageName, HandlerFunction<any, any>>
 
 // Background scripts call this to set up listeners
-export function setListener<U, T=void>(messageType: MessageName, handler: HandlerFunction<T, U>): void {
+export function setListener<U = {}, T=void>(messageType: MessageName, handler: HandlerFunction<T, U>): void {
   if (!messageHandlers) {
     messageHandlers = new Map()
   }

@@ -36,3 +36,5 @@ export type IsUpdateAvailablePayload = {
   isUpdateAvailable: boolean
 }
 export const isUpdateAvailable = createAction<IsUpdateAvailablePayload>('isUpdateAvailable')
+
+export const resetTodayPrefsToDefault = createAction('resetTodayPrefsToDefault')
