@@ -37,4 +37,6 @@ export type NewTabActions =
   typeof geminiActions &
   typeof bitcoinDotComActions &
   typeof cryptoDotComActions &
-  typeof todayActions
+  {
+    today: typeof todayActions
+  }
