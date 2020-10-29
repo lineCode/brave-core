@@ -132,15 +132,12 @@ source_set("browser_process") {
     "//brave/browser/net",
     "//brave/browser/notifications",
     "//brave/browser/translate/buildflags",
-<<<<<<< HEAD
     "//brave/chromium_src:browser",
     "//brave/chromium_src:browser",
     "//brave/chromium_src:browser",
-=======
     # //chrome/browser depends on //brave/browser:browser_process, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src/chrome/browser
     "//brave/chromium_src/chrome/browser",
->>>>>>> Address comments - cleanup and fix deps error
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/binance/browser/buildflags",
