@@ -2,10 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as React from 'react'
 import styled, { css } from 'brave-ui/theme'
+import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
+const CLASSNAME_PAGE_STUCK = 'page-stuck'
 
 const singleColumnSmallViewport = css`
  @media screen and (max-width: ${breakpointEveryBlock}) {
@@ -22,7 +25,6 @@ interface PageProps {
   showTopSites: boolean
   showAddCard: boolean
   showBrandedWallpaper: boolean
-  itemsOpacity: boolean
 }
 
 function getItemRowCount (p: PageProps): number {
@@ -35,7 +37,7 @@ function getItemRowCount (p: PageProps): number {
   return Math.max(left, right) + 1 // extra 1 for footer
 }
 
-export const Page = styled<PageProps, 'div'>('div')`
+const StyledPage = styled<PageProps, 'div'>('div')`
   /* Increase the explicit row count when adding new widgets
      so that the footer goes in the correct location always,
      yet can still merge upwards to previous rows. */
@@ -44,6 +46,7 @@ export const Page = styled<PageProps, 'div'>('div')`
   --ntp-space-rows: 0;
   --ntp-page-rows: calc(var(--ntp-item-row-count) + var(--ntp-space-rows));
   --ntp-item-justify: start;
+  --blur-amount: calc(var(--ntp-extra-content-effect-multiplier, 0) * 38px);
   @media screen and (max-width: ${breakpointLargeBlocks}) {
     --ntp-space-rows: 1;
   }
@@ -55,8 +58,7 @@ export const Page = styled<PageProps, 'div'>('div')`
   box-sizing: border-box;
   position: relative;
   z-index: 3;
-  top: 0;
-  left: 0;
+  width: 100%;
   display: grid;
   grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
   grid-template-columns: min-content auto min-content;
@@ -66,17 +68,17 @@ export const Page = styled<PageProps, 'div'>('div')`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   min-height: 100vh;
   align-items: flex-start;
+  filter: blur(var(--blur-amount));
 
-  filter: blur(${p => p.itemsOpacity ? '18px' : '0'});
-  transition: filter 0.3s linear;
-
-  /* lock the screen so when brave today is scroled
-  NTP items remain in the same place */
-  position: sticky;
-  top: 0;
+  /* Fix the main NTP content so, when Brave Today is in-view,
+  NTP items remain in the same place, and still allows NTP
+  Page to scroll to the bottom before that starts happening. */
+  .${CLASSNAME_PAGE_STUCK} & {
+    position: fixed;
+    bottom: 0;
+  }
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
     display: flex;
@@ -84,6 +86,63 @@ export const Page = styled<PageProps, 'div'>('div')`
     align-items: center;
   }
 `
+
+export const Page: React.FunctionComponent<PageProps> = (props) => {
+  // Note(petemill): When we scroll to the bottom, if there's an
+  // extra scroll area (Brave Today) then we "sticky" the Page at
+  // the bottom scroll and overlay the extra content on top.
+  // This isn't possible with regular `position: sticky` as far as I can tell.
+  const pageRef = React.useRef<HTMLElement>(null)
+  React.useEffect(() => {
+    const element = pageRef.current
+    if (!element) {
+      console.error('no element')
+      return (() => {})
+    }
+    const root = document.querySelector<HTMLElement>('#root')
+
+    const sub = requestAnimationFrameThrottle(() => {
+      const viewportHeight = window.innerHeight
+      const scrollBottom = window.scrollY + viewportHeight
+      const scrollPast = scrollBottom - element.clientHeight
+      if (scrollPast >= 0) {
+        // Have blur effect amount follow scroll amount. Should
+        // be fully blurred at 50% of viewport height
+        const blurUpperLimit = viewportHeight * .65
+        const blurLowerLimit = viewportHeight * .25
+        const blurAmount = scrollPast > blurUpperLimit
+          ? 1
+          : scrollPast < blurLowerLimit
+            ? 0
+            : (scrollPast - blurLowerLimit) / (blurUpperLimit - blurLowerLimit)
+        if (root) {
+          root.style.setProperty('--ntp-extra-content-effect-multiplier', blurAmount.toString())
+          root.style.setProperty('--ntp-fixed-content-height', Math.round(element.clientHeight) + 'px')
+          root.classList.add(CLASSNAME_PAGE_STUCK)
+        }
+      } else {
+        if (root) {
+          root.style.setProperty('--ntp-extra-content-effect-multiplier', '0')
+          root.style.setProperty('--ntp-fixed-content-height', '0px')
+          root.classList.remove(CLASSNAME_PAGE_STUCK)
+        }
+      }
+    })
+
+    window.addEventListener('scroll', sub)
+    window.addEventListener('resize', sub)
+    sub()
+    return () => {
+      window.removeEventListener('scroll', sub)
+      window.removeEventListener('resize', sub)
+    }
+  }, [])
+  return (
+    <StyledPage innerRef={pageRef} {...props}>
+      { props.children }
+    </StyledPage>
+  )
+}
 
 export const GridItemStats = styled('section')`
   grid-column: 1 / span 2;
@@ -150,13 +209,26 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
-export const GridItemNavigationBraveToday = styled<{}, 'span'>('span')`
+export const GridItemNavigationBraveToday = styled<{}, 'div'>('div')`
   position: absolute;
-  bottom: 60px;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   text-align: center;
-  width: 100%;
+  font-size: 15px;
   color: white;
-  font-size: 24px;
+  > p {
+    margin: 0;
+  }
+  > div {
+    width: 16px;
+    height: 16px;
+  }
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`
@@ -200,6 +272,8 @@ interface AppProps {
 }
 
 export const App = styled<AppProps, 'div'>('div')`
+  position: relative;
+  padding-top: var(--ntp-fixed-content-height, "0px");
   box-sizing: border-box;
   display: flex;
   flex: 1;
