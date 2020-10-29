@@ -25,11 +25,12 @@ type ArticleProps = {
   onReadFeedItem: (item: BraveToday.FeedItem) => any
 }
 
-function LargeArticle (props: ArticleProps) {
+const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props: ArticleProps, ref) {
   const {publisher, item} = props
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
+  // `ref as any` due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   return (
-    <Card.Large>
+    <Card.Large innerRef={ref as any}>
       <a onClick={() => props.onReadFeedItem(item)} href={item.url} ref={cardRef}>
         <CardImage
           imageUrl={item.img}
@@ -47,9 +48,9 @@ function LargeArticle (props: ArticleProps) {
       </a>
     </Card.Large>
   )
-}
+})
 
-export default function CardSingleArticleLarge (props: Props) {
+const CardSingleArticleLarge = React.forwardRef<HTMLElement, Props>(function (props, ref) {
   // no full content no render®
   if (props.content.length === 0) {
     return <></>
@@ -66,10 +67,13 @@ export default function CardSingleArticleLarge (props: Props) {
     const publisher = props.publishers[item.publisher_id]
 
     return <LargeArticle
+      ref={ref}
       key={`card-key-${index}`}
       publisher={publisher} item={item}
       shouldScrollIntoView={shouldScrollIntoView}
       onReadFeedItem={props.onReadFeedItem}
     />
   })}</>
-}
+})
+
+export default CardSingleArticleLarge
