@@ -82,7 +82,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private AppMenuButtonHelper mMenuButtonHelper;
     private BottomControlsMediator mBottomControlsMediator;
     private Runnable mOriginalHomeButtonRunnable;
-    private final ScrollingBottomViewResourceFrameLayout mScrollingBottomView;
+    private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
     private HomeButton mHomeButton;
     private BookmarksButton mBookmarksButton;
     private SearchAccelerator mSearchAccelerator;
@@ -149,7 +149,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mMenuButtonHelper = menuButtonHelper;
         mBottomControlsMediator = bottomControlsMediator;
         mOriginalHomeButtonRunnable = openHomepageAction;
-        mScrollingBottomView = scrollingBottomView;
+        mScrollingBottomView = (BraveScrollingBottomViewResourceFrameLayout) scrollingBottomView;
     }
 
     /**
