@@ -89,3 +89,11 @@ reducer.on(Actions.isUpdateAvailable, (state, payload) => {
     isUpdateAvailable: payload.isUpdateAvailable
   }
 })
+
+reducer.on(Actions.refresh, (state) => {
+  return {
+    ...state,
+    isFetching: true,
+    articleScrollTo: undefined
+  }
+})

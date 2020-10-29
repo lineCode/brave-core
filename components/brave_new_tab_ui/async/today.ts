@@ -20,18 +20,21 @@ handler.on(Actions.todayInit.getType(), async (store, dispatch, payload) => {
   Background.send(MessageTypes.indicatingOpen)
 })
 
-handler.on(Actions.interactionBegin.getType(), async (store, dispatch) => {
-  try {
-    const [{feed}, {publishers}] = await Promise.all([
-      Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed),
-      Background.send<Messages.GetPublishersResponse>(MessageTypes.getPublishers)
-    ])
-    dispatch(Actions.dataReceived({feed, publishers}))
-  } catch (e) {
-    console.error('error receiving feed', e)
-    dispatch(Actions.errorGettingDataFromBackground(e))
+handler.on(
+  [Actions.interactionBegin.getType(), Actions.refresh.getType()],
+  async (store, dispatch) => {
+    try {
+      const [{feed}, {publishers}] = await Promise.all([
+        Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed),
+        Background.send<Messages.GetPublishersResponse>(MessageTypes.getPublishers)
+      ])
+      dispatch(Actions.dataReceived({feed, publishers}))
+    } catch (e) {
+      console.error('error receiving feed', e)
+      dispatch(Actions.errorGettingDataFromBackground(e))
+    }
   }
-})
+)
 
 handler.on(Actions.ensureSettingsData.getType(), async (store, dispatch) => {
   const state = store.getState() as ApplicationState
@@ -59,11 +62,19 @@ handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), 
     enabled
   })
   dispatch(Actions.dataReceived({publishers}))
-  dispatch(Actions.checkForUpdate())
+  store.dispatch(Actions.checkForUpdate())
 })
 
 handler.on(Actions.checkForUpdate.getType(), async function (store, dispatch) {
-  const isUpdateAvailable = await Background.send<Messages.IsFeedUpdateAvailableResponse>(MessageTypes.isFeedUpdateAvailable)
+  const state = store.getState() as ApplicationState
+  if (!state.today.feed || !state.today.feed.hash) {
+    dispatch(Actions.isUpdateAvailable({ isUpdateAvailable: true }))
+    return
+  }
+  const hash = state.today.feed.hash
+  const isUpdateAvailable = await Background.send<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUpdateAvailablePayload>(MessageTypes.isFeedUpdateAvailable, {
+    hash
+  })
   dispatch(Actions.isUpdateAvailable(isUpdateAvailable))
 })
 

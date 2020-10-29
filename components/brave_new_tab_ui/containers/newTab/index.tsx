@@ -1195,13 +1195,16 @@ class NewTabPage extends React.Component<Props, State> {
         </Page.Page>
         { newTabData.showToday &&
         <BraveToday
-          onInteracting={this.onBraveTodayInteracting}
-          onCustomizeBraveToday={() => {this.openSettings(SettingsTabType.BraveToday)}}
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
-          onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
+          isFetching={this.props.todayData.isFetching === true}
+          isUpdateAvailable={this.props.todayData.isUpdateAvailable}
+          onRefresh={this.props.actions.today.refresh}
+          onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
+          onInteracting={this.onBraveTodayInteracting}
+          onCustomizeBraveToday={() => {this.openSettings(SettingsTabType.BraveToday)}}
           onReadFeedItem={this.props.actions.today.readFeedItem}
         />
         }

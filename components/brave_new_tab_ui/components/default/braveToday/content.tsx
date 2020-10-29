@@ -9,6 +9,7 @@ import CardDeals from './cards/cardDeals'
 import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import { Props } from './'
+import Refresh from './options/refresh'
 
 export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
@@ -84,6 +85,7 @@ export default function BraveTodayContent (props: Props) {
         })
       }
       <Customize onCustomizeBraveToday={props.onCustomizeBraveToday} show={showOptions} />
+      <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
       <div ref={setScrollTriggerRef} />
     </>
   )
