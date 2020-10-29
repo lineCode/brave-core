@@ -20,5 +20,6 @@ window.trustedTypes.createPolicy('default', {
       throw new Error(`Asked for a script url that has a disallowed origin of ${parsed.origin}. URL was: ${url}.`)
     }
     return url
-  }
+  },
+  createHTML: (htmlString: string) => htmlString
 });
