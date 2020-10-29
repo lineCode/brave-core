@@ -9,7 +9,7 @@ import {
   Heading as StandardHeading,
   Image as StandardImage,
   Time as StandardTime,
-  PublisherLogo as StandardPublisherLogo
+  PublisherLogo as StandardPublisherLogo,
 } from '../../default'
 
 export const BrandedList = styled(StandardBlock)``
@@ -69,6 +69,17 @@ export const Heading = styled(StandardHeading)`
     color: inherit;
     text-decoration: none;
   }
+`
+
+export const Publisher = styled('div')`
+  max-width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-size: 14px;
+  color: white;
+  font-weight: 700;
 `
 
 export const Time = styled(StandardTime)``
