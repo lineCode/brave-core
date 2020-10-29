@@ -10,11 +10,14 @@ import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 
 // Components
 import { Button } from 'brave-ui'
+import { CaratRightIcon } from 'brave-ui/components/icons'
 import {
   SettingsRow,
-  SettingsText
+  SettingsText,
+  SettingsSectionTitle,
 } from '../../../../components/default'
 import { Toggle } from '../../../../components/toggle'
+import NavigateBack from '../../../../components/default/settings/navigateBack';
 import * as Styled from './style'
 
 interface Props {
@@ -71,18 +74,14 @@ function ListItem (props: ListItemProps) {
   )
 }
 
-function PublisherPrefs (props: Props) {
+type PublisherPrefsProps = {
+  setPublisherPref: (publisherId: string, enabled: boolean) => any
+  publishers: BraveToday.Publisher[]
+}
+
+function PublisherPrefs (props: PublisherPrefsProps) {
   const listRef = React.useRef<VariableSizeList | null>(null);
   const sizeMap = React.useRef<{ [key: string]: number }>({});
-
-  // Ensure publishers data is fetched, which won't happen
-  // if user has not interacted with Brave Today on this page
-  // view.
-  React.useEffect(() => {
-    if (props.showToday) {
-      props.onDisplay()
-    }
-  }, [props.onDisplay, props.showToday])
 
   const setSize = React.useCallback((index: number, size: number) => {
     // Performance: Only update the sizeMap and reset cache if an actual value changed
@@ -99,19 +98,7 @@ function PublisherPrefs (props: Props) {
     return sizeMap.current[index] || 900;
   }, []);
 
-  // Compute sorted array of publishers
-  const publishers = React.useMemo(function () {
-    if (props.publishers) {
-      const publishers = Object.values(props.publishers)
-      publishers.sort((a, b) => a.publisher_name.toLocaleLowerCase().localeCompare(b.publisher_name.toLocaleLowerCase()))
-      return publishers
-    }
-    return null
-  }, [props.publishers])
-
-  if (!publishers) {
-    return <div>Loading...</div>
-  }
+  const publishers = props.publishers
 
   return (
     <DynamicListContext.Provider
@@ -128,6 +115,9 @@ function PublisherPrefs (props: Props) {
               itemCount={publishers.length}
               itemSize={getSize}
               overscanCount={38}
+              style={{
+                overscrollBehavior: 'contain'
+              }}
             >
               {function (itemProps) {
                 return (
@@ -146,7 +136,119 @@ function PublisherPrefs (props: Props) {
   )
 }
 
+
+type CategoryListProps = {
+  categories: string[]
+  setCategory: (category: string) => any
+}
+
+function CategoryList (props: CategoryListProps) {
+  return (<>
+    <SettingsSectionTitle>Sources</SettingsSectionTitle>
+    {props.categories.map(category => {
+      return (
+        <SettingsRow isInteractive={true} onClick={() => props.setCategory(category)}>
+          <SettingsText>{category}</SettingsText>
+          <Styled.SourcesCommandIcon>
+            <CaratRightIcon />
+          </Styled.SourcesCommandIcon>
+        </SettingsRow>
+      )
+    })}
+  </>)
+}
+
+type CategoryProps = {
+  category: string
+  publishers: BraveToday.Publisher[]
+  onBack: () => any
+  setPublisherPref: (publisherId: string, enabled: boolean) => any
+}
+
+function Category (props: CategoryProps) {
+  return (
+    <Styled.Section>
+      <Styled.StaticPrefs>
+        <NavigateBack onBack={props.onBack}></NavigateBack>
+        <SettingsSectionTitle>{props.category}</SettingsSectionTitle>
+      </Styled.StaticPrefs>
+      <Styled.PublisherList>
+        <PublisherPrefs
+          publishers={props.publishers}
+          setPublisherPref={props.setPublisherPref}
+        />
+      </Styled.PublisherList>
+    </Styled.Section>
+  )
+}
+
+// TODO: l10n
+const categoryNameAll = 'All sources'
+
+type SourcesProps = Props & {
+  category: string
+  setCategory: (category: string) => any
+}
+
+function Sources (props: SourcesProps) {
+  const publishersByCategory = React.useMemo<Map<string, BraveToday.Publisher[]>>(() => {
+    const result = new Map<string, BraveToday.Publisher[]>()
+    result.set(categoryNameAll, [])
+    if (!props.publishers) {
+      return result
+    }
+    for (const publisher of Object.values(props.publishers)) {
+      const forAll = result.get(categoryNameAll) || []
+      forAll.push(publisher)
+      result.set(categoryNameAll, forAll)
+      if (publisher.category) {
+        const forCategory = result.get(publisher.category) || []
+        forCategory.push(publisher)
+        result.set(publisher.category, forCategory)
+      }
+    }
+    // Sort all publishers alphabetically
+    for (const publishers of result.values()) {
+      publishers.sort((a, b) => a.publisher_name.toLocaleLowerCase().localeCompare(b.publisher_name.toLocaleLowerCase()))
+    }
+    return result
+  }, [props.publishers])
+  // No publishers
+  // TODO(petemill): error state
+  if (!props.publishers) {
+    return <div>Loading...</div>
+  }
+  // Category list
+  if (!props.category) {
+    return <CategoryList
+      categories={[...publishersByCategory.keys()]}
+      setCategory={props.setCategory}
+    />
+  }
+  const categoryPublishers = publishersByCategory.get(props.category)
+  if (!categoryPublishers) {
+    return null
+  }
+  // Category
+  return <Category
+    category={props.category}
+    publishers={categoryPublishers}
+    onBack={() => props.setCategory('')}
+    setPublisherPref={props.setPublisherPref}
+  />
+}
+
 export default function BraveTodayPrefs (props: Props) {
+  // Ensure publishers data is fetched, which won't happen
+  // if user has not interacted with Brave Today on this page
+  // view.
+  React.useEffect(() => {
+    if (props.showToday) {
+      props.onDisplay()
+    }
+  }, [props.onDisplay, props.showToday])
+
+  const [category, setCategory] = React.useState<string>('')
 
   const confirmAction = React.useCallback(() => {
     if (confirm('Reset all your Brave Today publisher choices to their default?')) {
@@ -156,9 +258,9 @@ export default function BraveTodayPrefs (props: Props) {
 
   return (
     <Styled.Section>
-      <Styled.StaticPrefs>
+        {!category && <>
         <SettingsRow>
-          <SettingsText>Show Brave Today?</SettingsText>
+          <SettingsText>Show Brave Today</SettingsText>
           <Toggle
             checked={props.showToday}
             onChange={props.toggleShowToday}
@@ -166,13 +268,12 @@ export default function BraveTodayPrefs (props: Props) {
           />
         </SettingsRow>
         <SettingsRow>
-          <Button type="subtle" level="tertiary" onClick={confirmAction} text="Reset Brave Today settings" />
+          <div></div>
+          <Button type="warn" level="tertiary" onClick={confirmAction} text="Reset Brave Today settings" />
         </SettingsRow>
-      </Styled.StaticPrefs>
+        </>}
       {props.showToday &&
-      <Styled.PublisherList>
-        <PublisherPrefs {...props} />
-      </Styled.PublisherList>
+      <Sources category={category} setCategory={setCategory} {...props} />
       }
     </Styled.Section>
   )

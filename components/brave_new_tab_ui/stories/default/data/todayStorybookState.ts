@@ -10,14 +10,14 @@ export default function getTodayState (): BraveTodayState {
       "5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5": {
         publisher_id: "5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
         publisher_name: "Test Publisher 1",
-        category: "",
+        category: "Tech",
         enabled: false,
         user_enabled: true
       },
       "4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5": {
         publisher_id: "4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
         publisher_name: "Test Publisher 2",
-        category: "",
+        category: "Top News",
         enabled: false,
         user_enabled: null
       },
