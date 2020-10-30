@@ -29,6 +29,7 @@
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_filter_factory.h"
+#include "bat/ads/internal/experiments/experiments.h"
 #include "bat/ads/internal/filters/ads_history_date_range_filter.h"
 #include "bat/ads/internal/filters/ads_history_filter_factory.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
@@ -227,6 +228,16 @@ void AdsImpl::InitializeStep6(
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet_);
 
   ad_conversions_->StartTimerIfReady();
+
+  if (!experiments::HasActiveTrial()) {
+    BLOG(1, "No active trial");
+  } else {
+    ActiveTrialInfo active_trial_info = experiments::GetActiveTrialInfo();
+    BLOG(1, "Running active trial: \n"
+        << "  trial_name: " << active_trial_info.trial_name << "\n"
+        << "  group_name: " << active_trial_info.group_name << "\n"
+        << "  parameter_value: " << active_trial_info.parameter_value);
+  }
 
   MaybeServeAdNotification(false);
 

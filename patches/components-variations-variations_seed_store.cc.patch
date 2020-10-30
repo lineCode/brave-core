@@ -1,0 +1,21 @@
+diff --git a/components/variations/variations_seed_store.cc b/components/variations/variations_seed_store.cc
+index 32fb7eee076c9200ddac6b3d2e58b1702631174f..2ed448a6400d40edfab3a956baf9a1b3ffa85604 100644
+--- a/components/variations/variations_seed_store.cc
++++ b/components/variations/variations_seed_store.cc
+@@ -7,6 +7,8 @@
+ #include <stdint.h>
+ #include <utility>
+ 
++#include <iostream>
++
+ #include "base/base64.h"
+ #include "base/bind_helpers.h"
+ #include "base/logging.h"
+@@ -57,6 +59,7 @@ constexpr char kIdenticalToSafeSeedSentinel[] = "safe_seed_content";
+ VerifySignatureResult VerifySeedSignature(
+     const std::string& seed_bytes,
+     const std::string& base64_seed_signature) {
++  BRAVE_VERIFY_SEED_SIGNATURE
+   if (base64_seed_signature.empty())
+     return VerifySignatureResult::MISSING_SIGNATURE;
+ 
