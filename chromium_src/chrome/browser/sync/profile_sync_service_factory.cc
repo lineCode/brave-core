@@ -5,10 +5,11 @@
 
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
+#include "brave/browser/sync/brave_profile_sync_service_delegate.h"
 
 #define BRAVE_BUILD_SERVICE_INSTANCE_FOR                                      \
     std::make_unique<syncer::BraveProfileSyncService>(std::move(init_params), \
-    DeviceInfoSyncServiceFactory::GetForProfile(profile));
+    new syncer::BraveProfileSyncServiceDelegate(profile));
 
 #include "../../../../../chrome/browser/sync/profile_sync_service_factory.cc"
 
